@@ -32,7 +32,7 @@ const userSchema =new mongoose.Schema({
     },
     watchHistory: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Video"
         }
     ],
@@ -54,7 +54,7 @@ userSchema.pre("save",async function(next){
     if(!this.isModified){
         return next()
     }
-   this.password = bcrypt.hash(this.password,10)
+   this.password =await bcrypt.hash(this.password,10)
    next()
 })
 
@@ -85,4 +85,5 @@ userSchema.methods.generateRefreshToken=function(){
         expiresIn:process.env.REFRESH_TOKEN_EXPIRY
     })
 }
-export const User = mongoose.model("User",userSchema)
+ const User = mongoose.model("User",userSchema)
+ export default User
